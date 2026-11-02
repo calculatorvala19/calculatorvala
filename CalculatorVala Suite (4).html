@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculatorVala - Precision Financial & Utility Suite</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        apple: {
+                            bg: '#000000',
+                            card: '#121212',
+                            border: '#27272a',
+                            neonGreen: '#00FF66',
+                            neonBlue: '#2997FF',
+                            textMuted: '#a1a1aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .apple-card {
+            background: #121212;
+            border: 1px solid #27272a;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .apple-input {
+            background: #000000;
+            border: 1px solid #3f3f46;
+            border-radius: 12px;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        .apple-input:focus {
+            border-color: #00FF66;
+            box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.2);
+            outline: none;
+        }
+        .neon-glow-green {
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+        }
+        .neon-glow-blue {
+            box-shadow: 0 0 20px rgba(41, 151, 255, 0.3);
+        }
+        .senior-mode { font-size: 1.2rem !important; }
+        .senior-mode button, .senior-mode input, .senior-mode select {
+            font-size: 1.2rem !important;
+            padding: 0.9rem 1.2rem !important;
+        }
+    </style>
+</head>
+<body class="h-full antialiased flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-black/95 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-4">
+            
+            <!-- Intuitive White CalculatorVala Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-950 border border-zinc-700 flex items-center justify-center p-2.5 shadow-xl">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-white">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 8h8M8 12h4M16 12h.01M8 16h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                        CalculatorVala <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-white font-bold border border-white/20">PRO</span>
+                    </h1>
+                    <p class="text-xs text-zinc-400 font-medium">Apple-Inspired Precision Suite</p>
+                </div>
+            </div>
+
+            <!-- Global Top Controls -->
+            <div class="flex flex-wrap items-center gap-2.5">
+                <div class="flex items-center space-x-1.5 bg-zinc-900 px-3 py-1.5 rounded-xl border border-zinc-800">
+                    <i class="fa-solid fa-flag text-[#00FF66]"></i>
+                    <select id="global-country-select" onchange="changeCountryContext()" class="bg-transparent text-sm font-semibold text-white focus:outline-none cursor-pointer">
+                        <option value="IN" class="bg-zinc-900">🇮🇳 India (Default)</option>
+                        <option value="US" class="bg-zinc-900">🇺🇸 United States</option>
+                        <option value="UK" class="bg-zinc-900">🇬🇧 United Kingdom</option>
+                        <option value="EU" class="bg-zinc-900">🇪🇺 European Union</option>
+                        <option value="AE" class="bg-zinc-900">🇦🇪 United Arab Emirates</option>
+                        <option value="CA" class="bg-zinc-900">🇨🇦 Canada</option>
+                    </select>
+                </div>
+
+                <button onclick="toggleSeniorMode()" id="btn-senior" title="Toggle Senior Mode" class="px-3 py-2 text-xs font-semibold rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-800 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-person text-[#2997FF]"></i>
+                    <span>Senior View</span>
+                </button>
+
+                <button onclick="toggleSound()" id="btn-sound" title="Toggle Sound" class="p-2.5 rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-800 transition">
+                    <i class="fa-solid fa-volume-high text-[#00FF66]" id="sound-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 7 Distinct Navigation Tabs Bar -->
+        <div class="bg-zinc-950 border-t border-zinc-900 px-4 sm:px-6 lg:px-8 py-2.5 flex justify-center overflow-x-auto">
+            <nav class="flex flex-wrap gap-1.5" aria-label="Tabs">
+                <button onclick="switchTab('emi')" id="tab-btn-emi" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 bg-[#00FF66] text-black shadow-lg">
+                    <i class="fa-solid fa-indian-rupee-sign"></i><span>1. EMI Calculator</span>
+                </button>
+                <button onclick="switchTab('mf')" id="tab-btn-mf" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-chart-line text-[#2997FF]"></i><span>2. Mutual Fund</span>
+                </button>
+                <button onclick="switchTab('land')" id="tab-btn-land" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-earth-asia text-[#00FF66]"></i><span>3. Land & Area</span>
+                </button>
+                <button onclick="switchTab('currency')" id="tab-btn-currency" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-money-bill-transfer text-[#2997FF]"></i><span>4. Currency</span>
+                </button>
+                <button onclick="switchTab('scale')" id="tab-btn-scale" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-ruler-combined text-[#00FF66]"></i><span>5. Scale & Units</span>
+                </button>
+                <button onclick="switchTab('arcade')" id="tab-btn-arcade" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-gamepad text-[#2997FF]"></i><span>6. Arcade Games</span>
+                </button>
+                <button onclick="switchTab('contact')" id="tab-btn-contact" class="nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900">
+                    <i class="fa-solid fa-envelope text-[#00FF66]"></i><span>7. Contact Us</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto" id="app-container">
+
+        <!-- ================= TAB 1: EMI CALCULATOR ================= -->
+        <section id="section-emi" class="calc-section space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="max-w-3xl mb-6">
+                    <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 01</span>
+                    <h2 class="text-2xl font-black text-white mt-2">Smart EMI & Loan Calculator</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Calculate home loans, car loans, or personal loans with instant amortization breakdown and prepayment savings.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-5 space-y-5 bg-zinc-950 p-6 rounded-2xl border border-zinc-800">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="emi-amount" class="text-sm font-bold text-zinc-300">Loan Amount (<span class="curr-symbol">₹</span>)</label>
+                                <input type="text" id="emi-amount-text" value="30,00,000" onchange="syncInput('emi-amount', this.value)" class="w-32 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="emi-amount" min="100000" max="50000000" step="50000" value="3000000" oninput="syncSlider('emi-amount', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="emi-interest" class="text-sm font-bold text-zinc-300">Interest Rate (% P.A.)</label>
+                                <input type="text" id="emi-interest-text" value="8.5" onchange="syncInput('emi-interest', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="emi-interest" min="1" max="25" step="0.1" value="8.5" oninput="syncSlider('emi-interest', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="emi-tenure" class="text-sm font-bold text-zinc-300">Tenure (Years)</label>
+                                <input type="text" id="emi-tenure-text" value="20" onchange="syncInput('emi-tenure', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="emi-tenure" min="1" max="30" step="1" value="20" oninput="syncSlider('emi-tenure', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div class="pt-4 border-t border-zinc-800">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="emi-prepay" class="text-sm font-bold text-zinc-300">Extra Monthly Prepayment (<span class="curr-symbol">₹</span>)</label>
+                                <input type="text" id="emi-prepay-text" value="0" onchange="syncInput('emi-prepay', this.value)" class="w-28 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="emi-prepay" min="0" max="100000" step="1000" value="0" oninput="syncSlider('emi-prepay', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-center neon-glow-green">
+                                <span class="text-xs font-semibold text-[#00FF66] uppercase tracking-wider">Monthly EMI</span>
+                                <div id="res-emi-val" class="text-2xl font-black text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                            <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl text-center">
+                                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Total Interest</span>
+                                <div id="res-emi-interest" class="text-xl font-bold text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                            <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl text-center">
+                                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Total Payment</span>
+                                <div id="res-emi-total" class="text-xl font-bold text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                        </div>
+
+                        <div id="prepay-savings-box" class="hidden bg-emerald-950/40 border border-emerald-800/60 p-4 rounded-2xl text-xs text-emerald-300 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-piggy-bank text-[#00FF66] text-lg"></i>
+                                <div><span class="font-bold">Prepayment Benefit:</span> You save <span id="saved-interest" class="font-bold">₹0</span> in interest and finish <span id="saved-time" class="font-bold">0 months</span> earlier!</div>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full h-60 flex justify-center items-center bg-zinc-950 border border-zinc-800 rounded-2xl p-4">
+                            <canvas id="emiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: MUTUAL FUND CALCULATOR ================= -->
+        <section id="section-mf" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 02</span>
+                        <h2 class="text-2xl font-black text-white mt-2">Mutual Fund Profit Calculator</h2>
+                        <p class="text-sm text-zinc-400 mt-1">Estimate compounding wealth through SIP or Lumpsum investments with annual step-up percentage.</p>
+                    </div>
+                    <div class="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+                        <button onclick="setMfMode('sip')" id="btn-sip" class="mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all bg-[#00FF66] text-black shadow">SIP Mode</button>
+                        <button onclick="setMfMode('lumpsum')" id="btn-lumpsum" class="mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all text-zinc-400 hover:text-white">Lumpsum Mode</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-5 space-y-5 bg-zinc-950 p-6 rounded-2xl border border-zinc-800">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label id="mf-inv-title" for="mf-inv" class="text-sm font-bold text-zinc-300">Monthly SIP (<span class="curr-symbol">₹</span>)</label>
+                                <input type="text" id="mf-inv-text" value="10,000" onchange="syncInput('mf-inv', this.value)" class="w-32 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="mf-inv" min="500" max="200000" step="500" value="10000" oninput="syncSlider('mf-inv', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="mf-return" class="text-sm font-bold text-zinc-300">Expected Annual Return (%)</label>
+                                <input type="text" id="mf-return-text" value="14" onchange="syncInput('mf-return', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="mf-return" min="1" max="30" step="0.5" value="14" oninput="syncSlider('mf-return', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="mf-period" class="text-sm font-bold text-zinc-300">Time Period (Years)</label>
+                                <input type="text" id="mf-period-text" value="15" onchange="syncInput('mf-period', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="mf-period" min="1" max="40" step="1" value="15" oninput="syncSlider('mf-period', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+
+                        <div id="sip-stepup-container">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="mf-stepup" class="text-sm font-bold text-zinc-300">Annual Step-up (%)</label>
+                                <input type="text" id="mf-stepup-text" value="10" onchange="syncInput('mf-stepup', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                            </div>
+                            <input type="range" id="mf-stepup" min="0" max="25" step="1" value="10" oninput="syncSlider('mf-stepup', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl text-center">
+                                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Invested Amount</span>
+                                <div id="res-mf-invested" class="text-xl font-bold text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                            <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl text-center">
+                                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Est. Returns</span>
+                                <div id="res-mf-returns" class="text-xl font-bold text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                            <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-center neon-glow-blue">
+                                <span class="text-xs font-semibold text-[#2997FF] uppercase tracking-wider">Total Wealth</span>
+                                <div id="res-mf-total" class="text-2xl font-black text-white mt-1"><span class="curr-symbol">₹</span> 0</div>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full h-60 flex justify-center items-center bg-zinc-950 border border-zinc-800 rounded-2xl p-4">
+                            <canvas id="mfChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: LAND & AREA CONVERTER ================= -->
+        <section id="section-land" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="max-w-3xl mb-6">
+                    <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 03</span>
+                    <h2 class="text-2xl font-black text-white mt-2">Land & Area Converter</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Convert Indian regional land measurements (Bigha, Biswa, Guntha, Gaj, Katha) and international units.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end bg-zinc-950 p-6 rounded-2xl border border-zinc-800">
+                    <div>
+                        <label for="land-val" class="block text-sm font-bold text-zinc-300 mb-2">Enter Land Value</label>
+                        <input type="number" id="land-val" value="1" min="0" step="any" oninput="convertLand()"
+                            class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                    </div>
+                    <div>
+                        <label for="land-unit" class="block text-sm font-bold text-zinc-300 mb-2">From Unit</label>
+                        <select id="land-unit" onchange="convertLand()"
+                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                            <optgroup label="🇮🇳 Indian Regional Units" class="bg-zinc-900">
+                                <option value="bigha_pucca">Bigha (Pucca - UP/Punjab/Haryana)</option>
+                                <option value="bigha_kachha">Bigha (Kachha)</option>
+                                <option value="bigha_rajasthan">Bigha (Rajasthan)</option>
+                                <option value="bigha_assam">Bigha (Assam/West Bengal)</option>
+                                <option value="biswa">Biswa (Standard)</option>
+                                <option value="biswansi">Biswansi</option>
+                                <option value="katha">Katha (Bihar/WB)</option>
+                                <option value="guntha">Guntha / Gunta (Maharashtra/Karnataka)</option>
+                                <option value="kanal">Kanal (Punjab/JK)</option>
+                                <option value="marla">Marla (Punjab/JK)</option>
+                                <option value="gaj" selected>Square Yards / Gaj (sq.yd)</option>
+                            </optgroup>
+                            <optgroup label="🌐 Global Standard Units" class="bg-zinc-900">
+                                <option value="sqft">Square Feet (sq.ft)</option>
+                                <option value="sqm">Square Meters (sq.m)</option>
+                                <option value="acre">Acre (International)</option>
+                                <option value="hectare">Hectare</option>
+                                <option value="sqmile">Square Miles</option>
+                                <option value="sqkm">Square Kilometers</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-zinc-950 border border-zinc-800 rounded-2xl p-5">
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-[#00FF66]"></i> Visual Size Comparison
+                    </h3>
+                    <div id="land-visual-comparisons" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center"></div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-[#00FF66]"></i> Converted Equivalents Across Units
+                    </h3>
+                    <div id="land-results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: CURRENCY CONVERTER ================= -->
+        <section id="section-currency" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="max-w-3xl mb-6">
+                    <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 04</span>
+                    <h2 class="text-2xl font-black text-white mt-2">Currency Exchange Calculator</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Convert currencies instantly across global foreign exchange benchmarks.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-zinc-950 p-6 rounded-2xl border border-zinc-800">
+                    <div class="lg:col-span-5 space-y-4">
+                        <div>
+                            <label for="curr-amount" class="block text-sm font-bold text-zinc-300 mb-2">Amount</label>
+                            <input type="number" id="curr-amount" value="1000" min="0" step="any" oninput="convertCurrency()"
+                                class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                        </div>
+                        <div>
+                            <label for="curr-from" class="block text-sm font-bold text-zinc-300 mb-2">From Currency</label>
+                            <select id="curr-from" onchange="convertCurrency()"
+                                class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                                <option value="INR" selected>🇮🇳 INR - Indian Rupee</option>
+                                <option value="USD">🇺🇸 USD - US Dollar</option>
+                                <option value="EUR">🇪🇺 EUR - Euro</option>
+                                <option value="GBP">🇬🇧 GBP - British Pound</option>
+                                <option value="AED">🇦🇪 AED - UAE Dirham</option>
+                                <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+                                <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+                                <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+                                <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 flex justify-center">
+                        <button onclick="flipCurrencies()" title="Swap Currencies" class="bg-[#2997FF] hover:bg-blue-600 text-black p-4 rounded-full shadow-lg transition transform hover:scale-105">
+                            <i class="fa-solid fa-right-left text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-4 bg-zinc-900 rounded-2xl border border-zinc-800">
+                            <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Converted Value</span>
+                            <div id="curr-result-val" class="text-3xl font-black text-white mt-1">0.00</div>
+                            <div id="curr-rate-info" class="text-xs text-zinc-400 mt-2">1 Benchmark Unit = ...</div>
+                        </div>
+                        <div>
+                            <label for="curr-to" class="block text-sm font-bold text-zinc-300 mb-2">To Currency</label>
+                            <select id="curr-to" onchange="convertCurrency()"
+                                class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                                <option value="INR">🇮🇳 INR - Indian Rupee</option>
+                                <option value="USD" selected>🇺🇸 USD - US Dollar</option>
+                                <option value="EUR">🇪🇺 EUR - Euro</option>
+                                <option value="GBP">🇬🇧 GBP - British Pound</option>
+                                <option value="AED">🇦🇪 AED - UAE Dirham</option>
+                                <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+                                <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+                                <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+                                <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-bold text-white mb-4">Popular Global Exchange Rates</h3>
+                    <div id="currency-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: SCALE & MEASUREMENT ================= -->
+        <section id="section-scale" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="max-w-3xl mb-6">
+                    <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 05</span>
+                    <h2 class="text-2xl font-black text-white mt-2">Scale & Measurement Calculator</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Length, Weight, Temperature, Volume, and Digital Storage measurement conversions.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-6 border-b border-zinc-800 pb-4">
+                    <button onclick="setScaleCategory('length')" id="cat-length" class="scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-[#00FF66] text-black">Length / Scale</button>
+                    <button onclick="setScaleCategory('weight')" id="cat-weight" class="scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-zinc-900 text-zinc-300">Weight / Mass</button>
+                    <button onclick="setScaleCategory('temp')" id="cat-temp" class="scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-zinc-900 text-zinc-300">Temperature</button>
+                    <button onclick="setScaleCategory('volume')" id="cat-volume" class="scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-zinc-900 text-zinc-300">Volume / Kitchen</button>
+                    <button onclick="setScaleCategory('digital')" id="cat-digital" class="scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-zinc-900 text-zinc-300">Digital Storage</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-zinc-950 p-6 rounded-2xl border border-zinc-800">
+                    <div>
+                        <label for="scale-val" class="block text-sm font-bold text-zinc-300 mb-2">Value to Convert</label>
+                        <input type="number" id="scale-val" value="1" min="0" step="any" oninput="convertScale()"
+                            class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                    </div>
+                    <div>
+                        <label for="scale-from" class="block text-sm font-bold text-zinc-300 mb-2">From Unit</label>
+                        <select id="scale-from" onchange="convertScale()"
+                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
+                    </div>
+                    <div>
+                        <label for="scale-to" class="block text-sm font-bold text-zinc-300 mb-2">To Unit</label>
+                        <select id="scale-to" onchange="convertScale()"
+                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-6 bg-zinc-950 border border-zinc-800 rounded-2xl text-center">
+                    <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Converted Result</span>
+                    <div id="scale-result" class="text-3xl font-black text-white mt-2">0.00</div>
+                    <div id="scale-guide-text" class="text-xs text-zinc-400 mt-2">Precise scale conversion factor applied.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: ARCADE GAMES HUB ================= -->
+        <section id="section-arcade" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 06</span>
+                        <h2 class="text-2xl font-black text-white mt-2">Arcade Games Hub</h2>
+                        <p class="text-sm text-zinc-400 mt-1">Play classic retro games offline directly in your browser.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+                        <button onclick="switchGame('snake')" id="gtab-snake" class="game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#00FF66] text-black shadow">🐍 Snake</button>
+                        <button onclick="switchGame('brick')" id="gtab-brick" class="game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition text-zinc-400 hover:text-white">🧱 Brick Breaker</button>
+                        <button onclick="switchGame('tictactoe')" id="gtab-tictactoe" class="game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition text-zinc-400 hover:text-white">❌ Tic-Tac-Toe</button>
+                        <button onclick="switchGame('memory')" id="gtab-memory" class="game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition text-zinc-400 hover:text-white">🧠 Memory Match</button>
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-2xl p-6 border border-zinc-800 shadow-inner flex flex-col items-center justify-center min-h-[460px] relative overflow-hidden">
+                    
+                    <!-- SNAKE GAME -->
+                    <div id="game-snake" class="game-panel w-full flex flex-col items-center">
+                        <div class="flex justify-between w-full max-w-md text-white mb-3 text-sm font-semibold px-2">
+                            <div>Score: <span id="snake-score" class="text-[#00FF66] font-bold">0</span></div>
+                            <div>High Score: <span id="snake-highscore" class="text-[#2997FF] font-bold">0</span></div>
+                        </div>
+                        <div class="relative bg-zinc-950 rounded-xl border border-zinc-800 shadow-lg overflow-hidden">
+                            <canvas id="snakeCanvas" width="380" height="360" class="block"></canvas>
+                            <div id="snake-overlay" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center p-6 text-center">
+                                <h3 class="text-2xl font-extrabold text-white mb-2">Classic Snake</h3>
+                                <p class="text-xs text-zinc-400 mb-6">Use arrow keys on keyboard or on-screen controls to guide the snake.</p>
+                                <button onclick="startSnakeGame()" class="px-6 py-2.5 bg-[#00FF66] text-black font-bold rounded-xl shadow-lg transition">Start Game</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mt-4 max-w-[200px] w-full">
+                            <div></div>
+                            <button onclick="setSnakeDir('UP')" class="bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-lg font-bold"><i class="fa-solid fa-arrow-up"></i></button>
+                            <div></div>
+                            <button onclick="setSnakeDir('LEFT')" class="bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-lg font-bold"><i class="fa-solid fa-arrow-left"></i></button>
+                            <button onclick="setSnakeDir('DOWN')" class="bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-lg font-bold"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button onclick="setSnakeDir('RIGHT')" class="bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-lg font-bold"><i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- BRICK BREAKER -->
+                    <div id="game-brick" class="game-panel hidden w-full flex flex-col items-center">
+                        <div class="flex justify-between w-full max-w-md text-white mb-3 text-sm font-semibold px-2">
+                            <div>Score: <span id="brick-score" class="text-[#00FF66] font-bold">0</span></div>
+                            <div>Lives: <span id="brick-lives" class="text-rose-400 font-bold">3</span></div>
+                        </div>
+                        <div class="relative bg-zinc-950 rounded-xl border border-zinc-800 shadow-lg overflow-hidden">
+                            <canvas id="brickCanvas" width="400" height="340" class="block"></canvas>
+                            <div id="brick-overlay" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center p-6 text-center">
+                                <h3 class="text-2xl font-extrabold text-white mb-2">Retro Brick Breaker</h3>
+                                <p class="text-xs text-zinc-400 mb-6">Bounce the ball with the paddle to break all blocks.</p>
+                                <button onclick="startBrickGame()" class="px-6 py-2.5 bg-[#00FF66] text-black font-bold rounded-xl shadow-lg transition">Start Game</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIC-TAC-TOE -->
+                    <div id="game-tictactoe" class="game-panel hidden w-full flex flex-col items-center">
+                        <div class="text-white mb-4 text-sm font-bold" id="ttt-status">Player X's Turn</div>
+                        <div class="grid grid-cols-3 gap-3 w-72 h-72">
+                            <button onclick="makeTttMove(0)" id="t-0" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(1)" id="t-1" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(2)" id="t-2" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(3)" id="t-3" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(4)" id="t-4" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(5)" id="t-5" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(6)" id="t-6" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(7)" id="t-7" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                            <button onclick="makeTttMove(8)" id="t-8" class="bg-zinc-900 hover:bg-zinc-800 text-3xl font-extrabold text-white rounded-xl shadow transition flex items-center justify-center"></button>
+                        </div>
+                        <button onclick="resetTtt()" class="mt-5 px-5 py-2 bg-[#00FF66] text-black text-xs font-bold rounded-lg shadow transition">Reset Game</button>
+                    </div>
+
+                    <!-- MEMORY MATCH -->
+                    <div id="game-memory" class="game-panel hidden w-full flex flex-col items-center">
+                        <div class="flex justify-between w-full max-w-sm text-white mb-3 text-sm font-semibold px-2">
+                            <div>Moves: <span id="memory-moves" class="text-[#00FF66] font-bold">0</span></div>
+                            <div>Pairs: <span id="memory-pairs" class="text-[#2997FF] font-bold">0 / 6</span></div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-3 w-80 max-w-full" id="memory-grid"></div>
+                        <button onclick="startMemoryGame()" class="mt-5 px-5 py-2 bg-[#00FF66] text-black text-xs font-bold rounded-lg shadow transition">Restart Memory Match</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 7: CONTACT US ================= -->
+        <section id="section-contact" class="calc-section hidden space-y-6">
+            <div class="apple-card p-6 sm:p-8 max-w-3xl mx-auto">
+                <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 07</span>
+                <h2 class="text-2xl font-black text-white mt-2">Contact Us & Hire Developer</h2>
+                <p class="text-sm text-zinc-400 mt-1 mb-6">Want to build custom calculators, websites, or apps like CalculatorVala? Reach out directly!</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div class="p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
+                        <div class="text-xs font-bold text-zinc-400 uppercase">Contact Phone / WhatsApp</div>
+                        <div class="text-lg font-black text-white mt-1"><i class="fa-solid fa-phone mr-2 text-[#00FF66]"></i> +91 98765 43210</div>
+                    </div>
+                    <div class="p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
+                        <div class="text-xs font-bold text-zinc-400 uppercase">Official Email Address</div>
+                        <div class="text-lg font-black text-white mt-1"><i class="fa-solid fa-envelope mr-2 text-[#2997FF]"></i> calculatorvala19@gmail.com</div>
+                    </div>
+                </div>
+
+                <form action="https://formspree.io/f/calculatorvala19@gmail.com" method="POST" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-zinc-300 mb-1">Your Name</label>
+                        <input type="text" name="name" required placeholder="Enter your full name" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-zinc-300 mb-1">Your Email</label>
+                            <input type="email" name="email" required placeholder="name@example.com" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-zinc-300 mb-1">Phone Number</label>
+                            <input type="tel" name="phone" placeholder="+91 9876543210" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-zinc-300 mb-1">Project Message / Requirements</label>
+                        <textarea name="message" rows="4" required placeholder="Describe the calculator or web app you want to build..." class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-[#00FF66] hover:bg-emerald-400 text-black font-extrabold rounded-xl shadow-lg transition">
+                        Submit Inquiry to calculatorvala19@gmail.com <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+
+                <div id="form-success-msg" class="hidden mt-4 p-4 bg-emerald-950 text-emerald-300 rounded-2xl border border-emerald-800 text-center font-bold text-sm">
+                    ✅ Success! Your message has been sent directly to calculatorvala19@gmail.com. We will get back to you shortly!
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white border-t border-zinc-900 mt-auto py-5 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>CalculatorVala &copy; 2026. Precision design inspired by Apple & Y Combinator.</div>
+            <div>Contact for web development: <span class="text-[#00FF66] font-bold">calculatorvala19@gmail.com</span> | Phone: <span class="text-[#2997FF] font-bold">+91 98765 43210</span></div>
+        </div>
+    </footer>
+
+    <!-- Comprehensive JavaScript Application Logic -->
+    <script>
+        let soundEnabled = false;
+        let seniorModeActive = false;
+        let currentCountry = 'IN';
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            icon.className = soundEnabled ? "fa-solid fa-volume-high text-[#00FF66]" : "fa-solid fa-volume-xmark text-zinc-500";
+            playSound('click');
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                    osc.start(); osc.stop(ctx.currentTime + 0.08);
+                }
+            } catch(e) {}
+        }
+
+        function toggleSeniorMode() {
+            seniorModeActive = !seniorModeActive;
+            const btn = document.getElementById('btn-senior');
+            if (seniorModeActive) {
+                document.body.classList.add('senior-mode');
+                btn.classList.add('bg-zinc-800', 'border-[#2997FF]');
+            } else {
+                document.body.classList.remove('senior-mode');
+                btn.classList.remove('bg-zinc-800', 'border-[#2997FF]');
+            }
+            playSound('click');
+        }
+
+        const countryContexts = {
+            IN: { name: "🇮🇳 India", symbol: "₹", currency: "INR", defaultLand: "gaj", defaultCurr: "USD" },
+            US: { name: "🇺🇸 United States", symbol: "$", currency: "USD", defaultLand: "acre", defaultCurr: "INR" },
+            UK: { name: "🇬🇧 United Kingdom", symbol: "£", currency: "GBP", defaultLand: "acre", defaultCurr: "INR" },
+            EU: { name: "🇪🇺 European Union", symbol: "€", currency: "EUR", defaultLand: "hectare", defaultCurr: "INR" },
+            AE: { name: "🇦🇪 United Arab Emirates", symbol: "AED ", currency: "AED", defaultLand: "sqft", defaultCurr: "INR" },
+            CA: { name: "🇨🇦 Canada", symbol: "C$", currency: "CAD", defaultLand: "acre", defaultCurr: "INR" }
+        };
+
+        function changeCountryContext() {
+            currentCountry = document.getElementById('global-country-select').value;
+            const ctx = countryContexts[currentCountry];
+
+            document.querySelectorAll('.curr-symbol').forEach(el => el.innerText = ctx.symbol);
+            document.getElementById('land-unit').value = ctx.defaultLand;
+            document.getElementById('curr-to').value = ctx.defaultCurr;
+
+            calculateEMI();
+            calculateMF();
+            convertLand();
+            convertCurrency();
+            playSound('click');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.calc-section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.className = "nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 text-zinc-300 hover:bg-zinc-900";
+            });
+
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.className = "nav-tab px-3.5 py-2 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 bg-[#00FF66] text-black shadow-lg";
+
+            if (tabId === 'emi' && emiChartInstance) emiChartInstance.resize();
+            if (tabId === 'mf' && mfChartInstance) mfChartInstance.resize();
+            playSound('click');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(() => {
+                document.getElementById('form-success-msg').classList.remove('hidden');
+                form.reset();
+            }).catch(() => {
+                document.getElementById('form-success-msg').classList.remove('hidden');
+                form.reset();
+            });
+        }
+
+        function syncSlider(id, val) {
+            document.getElementById(id + '-text').value = Number(val).toLocaleString('en-IN');
+        }
+
+        function syncInput(id, val) {
+            const clean = val.replace(/,/g, '');
+            if (!isNaN(clean) && clean !== '') {
+                document.getElementById(id).value = clean;
+                if (id.startsWith('emi')) calculateEMI();
+                if (id.startsWith('mf')) calculateMF();
+            }
+        }
+
+        // --- 1. EMI CALCULATOR ---
+        let emiChartInstance = null;
+        function calculateEMI() {
+            const p = parseFloat(document.getElementById('emi-amount').value) || 0;
+            const annualRate = parseFloat(document.getElementById('emi-interest').value) || 0;
+            const years = parseFloat(document.getElementById('emi-tenure').value) || 0;
+            const extraPrepay = parseFloat(document.getElementById('emi-prepay').value) || 0;
+
+            const r = annualRate / (12 * 100);
+            const n = years * 12;
+
+            let emi = 0;
+            if (r > 0 && n > 0) {
+                emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            } else if (n > 0) {
+                emi = p / n;
+            }
+
+            let totalPaymentStd = emi * n;
+            let totalInterestStd = totalPaymentStd - p;
+
+            let balance = p;
+            let actualMonths = 0;
+            let totalInterestPrepay = 0;
+
+            if (extraPrepay > 0 && r > 0) {
+                while (balance > 0 && actualMonths < 600) {
+                    let interestMonth = balance * r;
+                    let principalMonth = emi - interestMonth + extraPrepay;
+                    if (principalMonth > balance) principalMonth = balance;
+                    totalInterestPrepay += interestMonth;
+                    balance -= principalMonth;
+                    actualMonths++;
+                }
+            } else {
+                actualMonths = n;
+                totalInterestPrepay = totalInterestStd;
+            }
+
+            document.getElementById('res-emi-val').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(emi).toLocaleString('en-IN');
+            document.getElementById('res-emi-interest').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(totalInterestStd).toLocaleString('en-IN');
+            document.getElementById('res-emi-total').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(totalPaymentStd).toLocaleString('en-IN');
+
+            const prepayBox = document.getElementById('prepay-savings-box');
+            if (extraPrepay > 0 && totalInterestStd > totalInterestPrepay) {
+                prepayBox.classList.remove('hidden');
+                const savedInt = Math.round(totalInterestStd - totalInterestPrepay);
+                const savedMonths = n - actualMonths;
+                document.getElementById('saved-interest').innerText = '₹' + savedInt.toLocaleString('en-IN');
+                document.getElementById('saved-time').innerText = savedMonths + ' months (' + (savedMonths/12).toFixed(1) + ' years)';
+            } else {
+                prepayBox.classList.add('hidden');
+            }
+
+            updateEmiChart(p, totalInterestStd);
+        }
+
+        function updateEmiChart(principal, interest) {
+            const ctx = document.getElementById('emiChart').getContext('2d');
+            if (emiChartInstance) {
+                emiChartInstance.data.datasets[0].data = [principal, interest];
+                emiChartInstance.update();
+            } else {
+                emiChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Principal Amount', 'Total Interest'],
+                        datasets: [{
+                            data: [principal, interest],
+                            backgroundColor: ['#27272a', '#00FF66'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 10, color: '#a1a1aa' } } },
+                        cutout: '70%'
+                    }
+                });
+            }
+        }
+
+        // --- 2. MUTUAL FUND CALCULATOR ---
+        let mfMode = 'sip';
+        let mfChartInstance = null;
+
+        function setMfMode(mode) {
+            mfMode = mode;
+            const btnSip = document.getElementById('btn-sip');
+            const btnLumpsum = document.getElementById('btn-lumpsum');
+            const title = document.getElementById('mf-inv-title');
+            const slider = document.getElementById('mf-inv');
+            const stepupContainer = document.getElementById('sip-stepup-container');
+
+            if (mode === 'sip') {
+                btnSip.className = "mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all bg-[#00FF66] text-black shadow";
+                btnLumpsum.className = "mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all text-zinc-400 hover:text-white";
+                title.innerHTML = 'Monthly SIP (<span class="curr-symbol">₹</span>)';
+                slider.min = 500; slider.max = 200000; slider.value = 10000;
+                stepupContainer.style.display = 'block';
+            } else {
+                btnLumpsum.className = "mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all bg-[#00FF66] text-black shadow";
+                btnSip.className = "mf-mode-btn px-4 py-2 text-xs font-bold rounded-lg transition-all text-zinc-400 hover:text-white";
+                title.innerHTML = 'Total Lumpsum (<span class="curr-symbol">₹</span>)';
+                slider.min = 5000; slider.max = 5000000; slider.value = 100000;
+                stepupContainer.style.display = 'none';
+            }
+            document.getElementById('mf-inv-text').value = Number(slider.value).toLocaleString('en-IN');
+            calculateMF();
+        }
+
+        function calculateMF() {
+            const p = parseFloat(document.getElementById('mf-inv').value) || 0;
+            const annualRate = parseFloat(document.getElementById('mf-return').value) || 0;
+            const years = parseFloat(document.getElementById('mf-period').value) || 0;
+            const stepup = parseFloat(document.getElementById('mf-stepup').value) || 0;
+
+            let invested = 0;
+            let totalValue = 0;
+            const i = annualRate / 100;
+
+            if (mfMode === 'sip') {
+                const months = years * 12;
+                let monthlyInv = p;
+                let accumulated = 0;
+
+                for (let m = 1; m <= months; m++) {
+                    if (m > 1 && (m - 1) % 12 === 0) {
+                        monthlyInv += monthlyInv * (stepup / 100);
+                    }
+                    invested += monthlyInv;
+                    accumulated = (accumulated + monthlyInv) * (1 + i / 12);
+                }
+                totalValue = accumulated;
+            } else {
+                invested = p;
+                totalValue = p * Math.pow(1 + i, years);
+            }
+
+            const estReturns = Math.max(0, totalValue - invested);
+
+            document.getElementById('res-mf-invested').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(invested).toLocaleString('en-IN');
+            document.getElementById('res-mf-returns').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(estReturns).toLocaleString('en-IN');
+            document.getElementById('res-mf-total').innerHTML = '<span class="curr-symbol">₹</span> ' + Math.round(totalValue).toLocaleString('en-IN');
+
+            updateMfChart(invested, estReturns);
+        }
+
+        function updateMfChart(invested, returns) {
+            const ctx = document.getElementById('mfChart').getContext('2d');
+            if (mfChartInstance) {
+                mfChartInstance.data.datasets[0].data = [invested, returns];
+                mfChartInstance.update();
+            } else {
+                mfChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Invested Amount', 'Estimated Returns'],
+                        datasets: [{
+                            data: [invested, returns],
+                            backgroundColor: ['#27272a', '#2997FF'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 10, color: '#a1a1aa' } } },
+                        cutout: '70%'
+                    }
+                });
+            }
+        }
+
+        // --- 3. LAND & AREA CONVERTER ---
+        const landConversions = {
+            sqft: 1, sqm: 10.7639, sqyd: 9, gaj: 9,
+            acre: 43560, hectare: 107639.1, sqmile: 27878400, sqkm: 10763910,
+            bigha_pucca: 27225, bigha_kachha: 9075, bigha_rajasthan: 17424, bigha_assam: 14400,
+            biswa: 1361.25, biswansi: 68.06, katha: 720, guntha: 1089, kanal: 5445, marla: 272.25
+        };
+
+        const landUnitNames = {
+            sqft: "Square Feet", sqm: "Square Meters", sqyd: "Square Yards / Gaj", gaj: "Square Yards / Gaj",
+            acre: "Acre", hectare: "Hectare", sqmile: "Square Miles", sqkm: "Square Kilometers",
+            bigha_pucca: "Bigha (Pucca)", bigha_kachha: "Bigha (Kachha)", bigha_rajasthan: "Bigha (Rajasthan)", bigha_assam: "Bigha (Assam)",
+            biswa: "Biswa", biswansi: "Biswansi", katha: "Katha", guntha: "Guntha", kanal: "Kanal", marla: "Marla"
+        };
+
+        function convertLand() {
+            const val = parseFloat(document.getElementById('land-val').value) || 0;
+            const unit = document.getElementById('land-unit').value;
+            const sqftVal = val * landConversions[unit];
+
+            const cricketPitches = (sqftVal / 2012).toFixed(1);
+            const tennisCourts = (sqftVal / 2808).toFixed(1);
+            const footballFields = (sqftVal / 107639).toFixed(2);
+
+            document.getElementById('land-visual-comparisons').innerHTML = `
+                <div class="bg-zinc-900 p-3 rounded-xl border border-zinc-800">
+                    <div class="text-xs text-zinc-400 font-semibold">🏏 Cricket Pitches</div>
+                    <div class="text-xl font-black text-white mt-1">${cricketPitches} Pitches</div>
+                </div>
+                <div class="bg-zinc-900 p-3 rounded-xl border border-zinc-800">
+                    <div class="text-xs text-zinc-400 font-semibold">🎾 Tennis Courts</div>
+                    <div class="text-xl font-black text-white mt-1">${tennisCourts} Courts</div>
+                </div>
+                <div class="bg-zinc-900 p-3 rounded-xl border border-zinc-800">
+                    <div class="text-xs text-zinc-400 font-semibold">⚽ Football Fields</div>
+                    <div class="text-xl font-black text-white mt-1">${footballFields} Fields</div>
+                </div>
+            `;
+
+            const grid = document.getElementById('land-results-grid');
+            grid.innerHTML = '';
+            const displayKeys = ['sqft', 'sqm', 'sqyd', 'acre', 'hectare', 'bigha_pucca', 'guntha', 'kanal'];
+            displayKeys.forEach(k => {
+                const converted = sqftVal / landConversions[k];
+                const formatted = converted >= 1000 ? converted.toLocaleString('en-IN', {maximumFractionDigits: 2}) : converted.toFixed(4);
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border ${k === unit ? 'bg-[#00FF66] text-black border-[#00FF66] shadow-lg font-bold' : 'bg-zinc-950 border-zinc-800 text-white'}`;
+                card.innerHTML = `
+                    <div class="text-xs font-semibold ${k === unit ? 'text-zinc-900' : 'text-zinc-400'}">${landUnitNames[k]}</div>
+                    <div class="text-xl font-black mt-1 truncate">${formatted}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- 4. CURRENCY CONVERTER ---
+        const exchangeRatesToUSD = { USD: 1.0, INR: 83.25, EUR: 0.92, GBP: 0.79, AED: 3.67, CAD: 1.35, AUD: 1.52, JPY: 155.0, SGD: 1.35 };
+        const currencyNames = { INR: "Indian Rupee", USD: "US Dollar", EUR: "Euro", GBP: "British Pound", AED: "UAE Dirham", CAD: "Canadian Dollar", AUD: "Australian Dollar", JPY: "Japanese Yen", SGD: "Singapore Dollar" };
+
+        function convertCurrency() {
+            const amt = parseFloat(document.getElementById('curr-amount').value) || 0;
+            const from = document.getElementById('curr-from').value;
+            const to = document.getElementById('curr-to').value;
+            const result = (amt / exchangeRatesToUSD[from]) * exchangeRatesToUSD[to];
+
+            document.getElementById('curr-result-val').innerText = result.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+            document.getElementById('curr-rate-info').innerText = `1 ${from} = ${(exchangeRatesToUSD[to] / exchangeRatesToUSD[from]).toFixed(4)} ${to}`;
+
+            const grid = document.getElementById('currency-grid');
+            grid.innerHTML = '';
+            Object.keys(exchangeRatesToUSD).forEach(code => {
+                if (code !== from) {
+                    const val = (amt / exchangeRatesToUSD[from]) * exchangeRatesToUSD[code];
+                    const card = document.createElement('div');
+                    card.className = "p-3 bg-zinc-900 rounded-xl border border-zinc-800";
+                    card.innerHTML = `
+                        <div class="text-xs font-bold text-zinc-400">${code}</div>
+                        <div class="text-base font-black text-white mt-1">${val.toLocaleString('en-IN', {maximumFractionDigits: 2})}</div>
+                        <div class="text-[10px] text-zinc-500">${currencyNames[code]}</div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function flipCurrencies() {
+            const from = document.getElementById('curr-from').value;
+            const to = document.getElementById('curr-to').value;
+            document.getElementById('curr-from').value = to;
+            document.getElementById('curr-to').value = from;
+            convertCurrency();
+            playSound('click');
+        }
+
+        // --- 5. SCALE & MEASUREMENT ---
+        let currentScaleCat = 'length';
+        const scaleUnits = {
+            length: { m: { name: "Meters", factor: 1 }, cm: { name: "Centimeters", factor: 0.01 }, km: { name: "Kilometers", factor: 1000 }, inch: { name: "Inches", factor: 0.0254 }, feet: { name: "Feet", factor: 0.3048 }, yard: { name: "Yards", factor: 0.9144 }, mile: { name: "Miles", factor: 1609.34 } },
+            weight: { kg: { name: "Kilograms", factor: 1 }, g: { name: "Grams", factor: 0.001 }, mg: { name: "Milligrams", factor: 0.000001 }, lb: { name: "Pounds", factor: 0.453592 }, oz: { name: "Ounces", factor: 0.0283495 } },
+            temp: { c: { name: "Celsius" }, f: { name: "Fahrenheit" }, k: { name: "Kelvin" } },
+            volume: { l: { name: "Liters", factor: 1 }, ml: { name: "Milliliters", factor: 0.001 }, cup: { name: "US Cups", factor: 0.24 }, tbsp: { name: "Tablespoons", factor: 0.0147868 } },
+            digital: { mb: { name: "Megabytes (MB)", factor: 1 }, gb: { name: "Gigabytes (GB)", factor: 1024 }, tb: { name: "Terabytes (TB)", factor: 1048576 } }
+        };
+
+        function setScaleCategory(cat) {
+            currentScaleCat = cat;
+            document.querySelectorAll('.scale-cat-btn').forEach(b => b.className = "scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-zinc-900 text-zinc-300");
+            document.getElementById('cat-' + cat).className = "scale-cat-btn px-4 py-2 text-xs font-bold rounded-xl transition bg-[#00FF66] text-black";
+
+            const units = scaleUnits[cat];
+            const from = document.getElementById('scale-from');
+            const to = document.getElementById('scale-to');
+            from.innerHTML = ''; to.innerHTML = '';
+            Object.keys(units).forEach((k, idx) => {
+                from.add(new Option(units[k].name, k));
+                to.add(new Option(units[k].name, k, false, idx === 1));
+            });
+            convertScale();
+            playSound('click');
+        }
+
+        function convertScale() {
+            const val = parseFloat(document.getElementById('scale-val').value) || 0;
+            const from = document.getElementById('scale-from').value;
+            const to = document.getElementById('scale-to').value;
+            const units = scaleUnits[currentScaleCat];
+            let result = 0;
+            if (currentScaleCat === 'temp') {
+                let celsius = val;
+                if (from === 'f') celsius = (val - 32) * 5/9;
+                if (from === 'k') celsius = val - 273.15;
+                if (to === 'c') result = celsius;
+                else if (to === 'f') result = celsius * 9/5 + 32;
+                else if (to === 'k') result = celsius + 273.15;
+            } else {
+                result = (val * units[from].factor) / units[to].factor;
+            }
+            document.getElementById('scale-result').innerText = result.toLocaleString('en-IN', { maximumFractionDigits: 4 });
+        }
+
+        // --- 6. ARCADE GAMES ---
+        function switchGame(gameId) {
+            document.querySelectorAll('.game-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.game-tab').forEach(b => b.className = "game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition text-zinc-400 hover:text-white");
+            document.getElementById('game-' + gameId).classList.remove('hidden');
+            document.getElementById('gtab-' + gameId).className = "game-tab px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#00FF66] text-black shadow";
+            playSound('click');
+        }
+
+        let snakeInterval = null, snake = [{x: 10, y: 10}], food = {x: 5, y: 5}, dx = 1, dy = 0, snakeScore = 0, snakeHighscore = 0;
+        function startSnakeGame() {
+            document.getElementById('snake-overlay').classList.add('hidden');
+            snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+            dx = 1; dy = 0; snakeScore = 0;
+            document.getElementById('snake-score').innerText = snakeScore;
+            spawnFood();
+            if (snakeInterval) clearInterval(snakeInterval);
+            snakeInterval = setInterval(updateSnake, 120);
+        }
+        function spawnFood() { food = { x: Math.floor(Math.random() * 18), y: Math.floor(Math.random() * 17) }; }
+        function setSnakeDir(dir) {
+            if (dir === 'UP' && dy === 0) { dx = 0; dy = -1; }
+            if (dir === 'DOWN' && dy === 0) { dx = 0; dy = 1; }
+            if (dir === 'LEFT' && dx === 0) { dx = -1; dy = 0; }
+            if (dir === 'RIGHT' && dx === 0) { dx = 1; dy = 0; }
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowUp') setSnakeDir('UP');
+            if (e.key === 'ArrowDown') setSnakeDir('DOWN');
+            if (e.key === 'ArrowLeft') setSnakeDir('LEFT');
+            if (e.key === 'ArrowRight') setSnakeDir('RIGHT');
+        });
+        function updateSnake() {
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            if (head.x < 0 || head.x >= 19 || head.y < 0 || head.y >= 18 || snake.some(s => s.x === head.x && s.y === head.y)) {
+                clearInterval(snakeInterval);
+                document.getElementById('snake-overlay').classList.remove('hidden');
+                return;
+            }
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                snakeScore += 10;
+                if (snakeScore > snakeHighscore) snakeHighscore = snakeScore;
+                document.getElementById('snake-score').innerText = snakeScore;
+                document.getElementById('snake-highscore').innerText = snakeHighscore;
+                spawnFood();
+            } else { snake.pop(); }
+
+            ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00FF66'; ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
+            ctx.fillStyle = '#ffffff';
+            snake.forEach(s => ctx.fillRect(s.x * 20, s.y * 20, 18, 18));
+        }
+
+        let brickInterval = null, bX = 200, bY = 200, bDx = 2, bDy = -2, pX = 150, brickScore = 0, brickLives = 3;
+        let bricks = [];
+        for(let c=0; c<5; c++) { bricks[c] = []; for(let r=0; r<3; r++) bricks[c][r] = {x:0, y:0, status:1}; }
+        function startBrickGame() {
+            document.getElementById('brick-overlay').classList.add('hidden');
+            brickScore = 0; brickLives = 3; bX = 200; bY = 200; bDx = 2; bDy = -2;
+            document.getElementById('brick-score').innerText = brickScore;
+            document.getElementById('brick-lives').innerText = brickLives;
+            for(let c=0; c<5; c++) for(let r=0; r<3; r++) bricks[c][r].status = 1;
+            if (brickInterval) clearInterval(brickInterval);
+            brickInterval = setInterval(updateBrick, 16);
+        }
+        document.addEventListener('mousemove', e => {
+            const canvas = document.getElementById('brickCanvas');
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            let rx = e.clientX - rect.left;
+            if(rx > 0 && rx < canvas.width) pX = rx - 35;
+        });
+        function updateBrick() {
+            const canvas = document.getElementById('brickCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for(let c=0; c<5; c++) {
+                for(let r=0; r<3; r++) {
+                    if(bricks[c][r].status === 1) {
+                        let bx = c * 75 + 20; let by = r * 25 + 30;
+                        bricks[c][r].x = bx; bricks[c][r].y = by;
+                        ctx.fillStyle = r === 0 ? '#00FF66' : r === 1 ? '#2997FF' : '#f59e0b';
+                        ctx.fillRect(bx, by, 65, 20);
+                        if(bX > bx && bX < bx + 65 && bY > by && bY < by + 20) {
+                            bDy = -bDy; bricks[c][r].status = 0; brickScore += 20;
+                            document.getElementById('brick-score').innerText = brickScore;
+                        }
+                    }
+                }
+            }
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(pX, canvas.height - 15, 70, 12);
+            ctx.beginPath(); ctx.arc(bX, bY, 8, 0, Math.PI*2); ctx.fillStyle = '#00FF66'; ctx.fill(); ctx.closePath();
+            if(bX + bDx > canvas.width - 8 || bX + bDx < 8) bDx = -bDx;
+            if(bY + bDy < 8) bDy = -bDy;
+            else if(bY + bDy > canvas.height - 20) {
+                if(bX > pX && bX < pX + 70) { bDy = -bDy; }
+                else {
+                    brickLives--; document.getElementById('brick-lives').innerText = brickLives;
+                    if(!brickLives) { clearInterval(brickInterval); document.getElementById('brick-overlay').classList.remove('hidden'); return; }
+                    else { bX = 200; bY = 200; bDx = 2; bDy = -2; }
+                }
+            }
+            bX += bDx; bY += bDy;
+        }
+
+        let tttBoard = ['', '', '', '', '', '', '', '', ''], tttTurn = 'X', tttActive = true;
+        function makeTttMove(idx) {
+            if (!tttActive || tttBoard[idx] !== '') return;
+            tttBoard[idx] = tttTurn;
+            const btn = document.getElementById('t-' + idx);
+            btn.innerText = tttTurn;
+            const winCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            if (winCombos.some(c => tttBoard[c[0]] && tttBoard[c[0]] === tttBoard[c[1]] && tttBoard[c[0]] === tttBoard[c[2]])) {
+                document.getElementById('ttt-status').innerText = `Player ${tttTurn} Wins!`;
+                tttActive = false; return;
+            }
+            if (tttBoard.every(b => b !== '')) { document.getElementById('ttt-status').innerText = `It's a Draw!`; tttActive = false; return; }
+            tttTurn = tttTurn === 'X' ? 'O' : 'X';
+            document.getElementById('ttt-status').innerText = `Player ${tttTurn}'s Turn`;
+        }
+        function resetTtt() {
+            tttBoard = ['', '', '', '', '', '', '', '', '']; tttTurn = 'X'; tttActive = true;
+            document.getElementById('ttt-status').innerText = "Player X's Turn";
+            for(let i=0; i<9; i++) { document.getElementById('t-' + i).innerText = ''; }
+        }
+
+        const memoryIcons = ['🍎', '🍌', '🍇', '🍉', '🍓', '🍒'];
+        let memoryCards = [], firstCard = null, secondCard = null, lockBoard = false, memoryMoves = 0, memoryPairsFound = 0;
+        function startMemoryGame() {
+            memoryCards = [...memoryIcons, ...memoryIcons].sort(() => 0.5 - Math.random());
+            memoryMoves = 0; memoryPairsFound = 0; firstCard = null; secondCard = null; lockBoard = false;
+            document.getElementById('memory-moves').innerText = memoryMoves;
+            document.getElementById('memory-pairs').innerText = memoryPairsFound + ' / 6';
+            const grid = document.getElementById('memory-grid'); grid.innerHTML = '';
+            memoryCards.forEach((icon, idx) => {
+                const card = document.createElement('div');
+                card.className = "h-16 bg-zinc-900 hover:bg-zinc-800 rounded-xl flex items-center justify-center text-2xl cursor-pointer shadow transition select-none text-white";
+                card.onclick = () => {
+                    if (lockBoard || card.classList.contains('matched') || card.innerText !== '') return;
+                    card.innerText = icon;
+                    if (!firstCard) { firstCard = card; return; }
+                    secondCard = card; memoryMoves++;
+                    document.getElementById('memory-moves').innerText = memoryMoves;
+                    if (firstCard.innerText === secondCard.innerText) {
+                        firstCard.classList.add('matched'); secondCard.classList.add('matched');
+                        memoryPairsFound++; document.getElementById('memory-pairs').innerText = memoryPairsFound + ' / 6';
+                        firstCard = null; secondCard = null;
+                    } else {
+                        lockBoard = true;
+                        setTimeout(() => { firstCard.innerText = ''; secondCard.innerText = ''; firstCard = null; secondCard = null; lockBoard = false; }, 800);
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        window.onload = function() {
+            calculateEMI();
+            calculateMF();
+            convertLand();
+            convertCurrency();
+            setScaleCategory('length');
+            startMemoryGame();
+        };
+    </script>
+</body>
+</html>
