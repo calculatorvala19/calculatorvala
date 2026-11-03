@@ -19,7 +19,7 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        apple: {
+                        Amit: {
                             bg: '#000000',
                             card: '#121212',
                             border: '#27272a',
@@ -38,20 +38,20 @@
             color: #ffffff;
             font-family: 'Inter', sans-serif;
         }
-        .apple-card {
+        .Amit-card {
             background: #121212;
             border: 1px solid #27272a;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        .apple-input {
+        .Amit-input {
             background: #000000;
             border: 1px solid #3f3f46;
             border-radius: 12px;
             color: #ffffff;
             transition: all 0.2s ease;
         }
-        .apple-input:focus {
+        .Amit-input:focus {
             border-color: #00FF66;
             box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.2);
             outline: none;
@@ -87,7 +87,7 @@
                     <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
                         CalculatorVala <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-white font-bold border border-white/20">PRO</span>
                     </h1>
-                    <p class="text-xs text-zinc-400 font-medium">Apple-Inspired Precision Suite</p>
+                    <p class="text-xs text-zinc-400 font-medium">Amit-Inspired Precision Suite</p>
                 </div>
             </div>
 
@@ -149,7 +149,7 @@
 
         <!-- ================= TAB 1: EMI CALCULATOR ================= -->
         <section id="section-emi" class="calc-section space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="max-w-3xl mb-6">
                     <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 01</span>
                     <h2 class="text-2xl font-black text-white mt-2">Smart EMI & Loan Calculator</h2>
@@ -161,7 +161,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label for="emi-amount" class="text-sm font-bold text-zinc-300">Loan Amount (<span class="curr-symbol">₹</span>)</label>
-                                <input type="text" id="emi-amount-text" value="30,00,000" onchange="syncInput('emi-amount', this.value)" class="w-32 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="emi-amount-text" value="30,00,000" onchange="syncInput('emi-amount', this.value)" class="w-32 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="emi-amount" min="100000" max="50000000" step="50000" value="3000000" oninput="syncSlider('emi-amount', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -169,7 +169,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label for="emi-interest" class="text-sm font-bold text-zinc-300">Interest Rate (% P.A.)</label>
-                                <input type="text" id="emi-interest-text" value="8.5" onchange="syncInput('emi-interest', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="emi-interest-text" value="8.5" onchange="syncInput('emi-interest', this.value)" class="w-24 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="emi-interest" min="1" max="25" step="0.1" value="8.5" oninput="syncSlider('emi-interest', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -177,7 +177,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label for="emi-tenure" class="text-sm font-bold text-zinc-300">Tenure (Years)</label>
-                                <input type="text" id="emi-tenure-text" value="20" onchange="syncInput('emi-tenure', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="emi-tenure-text" value="20" onchange="syncInput('emi-tenure', this.value)" class="w-24 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="emi-tenure" min="1" max="30" step="1" value="20" oninput="syncSlider('emi-tenure', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -185,7 +185,7 @@
                         <div class="pt-4 border-t border-zinc-800">
                             <div class="flex justify-between items-center mb-2">
                                 <label for="emi-prepay" class="text-sm font-bold text-zinc-300">Extra Monthly Prepayment (<span class="curr-symbol">₹</span>)</label>
-                                <input type="text" id="emi-prepay-text" value="0" onchange="syncInput('emi-prepay', this.value)" class="w-28 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="emi-prepay-text" value="0" onchange="syncInput('emi-prepay', this.value)" class="w-28 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="emi-prepay" min="0" max="100000" step="1000" value="0" oninput="syncSlider('emi-prepay', this.value); calculateEMI();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -224,7 +224,7 @@
 
         <!-- ================= TAB 2: MUTUAL FUND CALCULATOR ================= -->
         <section id="section-mf" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
                         <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 02</span>
@@ -242,7 +242,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label id="mf-inv-title" for="mf-inv" class="text-sm font-bold text-zinc-300">Monthly SIP (<span class="curr-symbol">₹</span>)</label>
-                                <input type="text" id="mf-inv-text" value="10,000" onchange="syncInput('mf-inv', this.value)" class="w-32 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="mf-inv-text" value="10,000" onchange="syncInput('mf-inv', this.value)" class="w-32 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="mf-inv" min="500" max="200000" step="500" value="10000" oninput="syncSlider('mf-inv', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -250,7 +250,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label for="mf-return" class="text-sm font-bold text-zinc-300">Expected Annual Return (%)</label>
-                                <input type="text" id="mf-return-text" value="14" onchange="syncInput('mf-return', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="mf-return-text" value="14" onchange="syncInput('mf-return', this.value)" class="w-24 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="mf-return" min="1" max="30" step="0.5" value="14" oninput="syncSlider('mf-return', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -258,7 +258,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label for="mf-period" class="text-sm font-bold text-zinc-300">Time Period (Years)</label>
-                                <input type="text" id="mf-period-text" value="15" onchange="syncInput('mf-period', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="mf-period-text" value="15" onchange="syncInput('mf-period', this.value)" class="w-24 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="mf-period" min="1" max="40" step="1" value="15" oninput="syncSlider('mf-period', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -266,7 +266,7 @@
                         <div id="sip-stepup-container">
                             <div class="flex justify-between items-center mb-2">
                                 <label for="mf-stepup" class="text-sm font-bold text-zinc-300">Annual Step-up (%)</label>
-                                <input type="text" id="mf-stepup-text" value="10" onchange="syncInput('mf-stepup', this.value)" class="w-24 text-right font-bold text-white apple-input px-2 py-1 text-sm">
+                                <input type="text" id="mf-stepup-text" value="10" onchange="syncInput('mf-stepup', this.value)" class="w-24 text-right font-bold text-white Amit-input px-2 py-1 text-sm">
                             </div>
                             <input type="range" id="mf-stepup" min="0" max="25" step="1" value="10" oninput="syncSlider('mf-stepup', this.value); calculateMF();" class="w-full accent-[#00FF66] cursor-pointer">
                         </div>
@@ -298,7 +298,7 @@
 
         <!-- ================= TAB 3: LAND & AREA CONVERTER ================= -->
         <section id="section-land" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="max-w-3xl mb-6">
                     <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 03</span>
                     <h2 class="text-2xl font-black text-white mt-2">Land & Area Converter</h2>
@@ -309,12 +309,12 @@
                     <div>
                         <label for="land-val" class="block text-sm font-bold text-zinc-300 mb-2">Enter Land Value</label>
                         <input type="number" id="land-val" value="1" min="0" step="any" oninput="convertLand()"
-                            class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                            class="w-full bg-black Amit-input px-4 py-3 text-lg font-medium text-white">
                     </div>
                     <div>
                         <label for="land-unit" class="block text-sm font-bold text-zinc-300 mb-2">From Unit</label>
                         <select id="land-unit" onchange="convertLand()"
-                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                            class="w-full bg-black Amit-input px-4 py-3 text-base font-medium text-white cursor-pointer">
                             <optgroup label="🇮🇳 Indian Regional Units" class="bg-zinc-900">
                                 <option value="bigha_pucca">Bigha (Pucca - UP/Punjab/Haryana)</option>
                                 <option value="bigha_kachha">Bigha (Kachha)</option>
@@ -358,7 +358,7 @@
 
         <!-- ================= TAB 4: CURRENCY CONVERTER ================= -->
         <section id="section-currency" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="max-w-3xl mb-6">
                     <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 04</span>
                     <h2 class="text-2xl font-black text-white mt-2">Currency Exchange Calculator</h2>
@@ -370,12 +370,12 @@
                         <div>
                             <label for="curr-amount" class="block text-sm font-bold text-zinc-300 mb-2">Amount</label>
                             <input type="number" id="curr-amount" value="1000" min="0" step="any" oninput="convertCurrency()"
-                                class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                                class="w-full bg-black Amit-input px-4 py-3 text-lg font-medium text-white">
                         </div>
                         <div>
                             <label for="curr-from" class="block text-sm font-bold text-zinc-300 mb-2">From Currency</label>
                             <select id="curr-from" onchange="convertCurrency()"
-                                class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                                class="w-full bg-black Amit-input px-4 py-3 text-base font-medium text-white cursor-pointer">
                                 <option value="INR" selected>🇮🇳 INR - Indian Rupee</option>
                                 <option value="USD">🇺🇸 USD - US Dollar</option>
                                 <option value="EUR">🇪🇺 EUR - Euro</option>
@@ -404,7 +404,7 @@
                         <div>
                             <label for="curr-to" class="block text-sm font-bold text-zinc-300 mb-2">To Currency</label>
                             <select id="curr-to" onchange="convertCurrency()"
-                                class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer">
+                                class="w-full bg-black Amit-input px-4 py-3 text-base font-medium text-white cursor-pointer">
                                 <option value="INR">🇮🇳 INR - Indian Rupee</option>
                                 <option value="USD" selected>🇺🇸 USD - US Dollar</option>
                                 <option value="EUR">🇪🇺 EUR - Euro</option>
@@ -428,7 +428,7 @@
 
         <!-- ================= TAB 5: SCALE & MEASUREMENT ================= -->
         <section id="section-scale" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="max-w-3xl mb-6">
                     <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 05</span>
                     <h2 class="text-2xl font-black text-white mt-2">Scale & Measurement Calculator</h2>
@@ -447,17 +447,17 @@
                     <div>
                         <label for="scale-val" class="block text-sm font-bold text-zinc-300 mb-2">Value to Convert</label>
                         <input type="number" id="scale-val" value="1" min="0" step="any" oninput="convertScale()"
-                            class="w-full bg-black apple-input px-4 py-3 text-lg font-medium text-white">
+                            class="w-full bg-black Amit-input px-4 py-3 text-lg font-medium text-white">
                     </div>
                     <div>
                         <label for="scale-from" class="block text-sm font-bold text-zinc-300 mb-2">From Unit</label>
                         <select id="scale-from" onchange="convertScale()"
-                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
+                            class="w-full bg-black Amit-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
                     </div>
                     <div>
                         <label for="scale-to" class="block text-sm font-bold text-zinc-300 mb-2">To Unit</label>
                         <select id="scale-to" onchange="convertScale()"
-                            class="w-full bg-black apple-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
+                            class="w-full bg-black Amit-input px-4 py-3 text-base font-medium text-white cursor-pointer"></select>
                     </div>
                 </div>
 
@@ -471,7 +471,7 @@
 
         <!-- ================= TAB 6: ARCADE GAMES HUB ================= -->
         <section id="section-arcade" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8">
+            <div class="Amit-card p-6 sm:p-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
                         <span class="text-xs font-black px-2.5 py-1 bg-[#2997FF]/20 text-[#2997FF] rounded-md border border-[#2997FF]/30">TAB 06</span>
@@ -561,7 +561,7 @@
 
         <!-- ================= TAB 7: CONTACT US ================= -->
         <section id="section-contact" class="calc-section hidden space-y-6">
-            <div class="apple-card p-6 sm:p-8 max-w-3xl mx-auto">
+            <div class="Amit-card p-6 sm:p-8 max-w-3xl mx-auto">
                 <span class="text-xs font-black px-2.5 py-1 bg-[#00FF66]/20 text-[#00FF66] rounded-md border border-[#00FF66]/30">TAB 07</span>
                 <h2 class="text-2xl font-black text-white mt-2">Contact Us & Hire Developer</h2>
                 <p class="text-sm text-zinc-400 mt-1 mb-6">Want to build custom calculators, websites, or apps like CalculatorVala? Reach out directly!</p>
@@ -580,21 +580,21 @@
                 <form action="https://formspree.io/f/calculatorvala19@gmail.com" method="POST" onsubmit="handleFormSubmit(event)" class="space-y-4">
                     <div>
                         <label class="block text-sm font-bold text-zinc-300 mb-1">Your Name</label>
-                        <input type="text" name="name" required placeholder="Enter your full name" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                        <input type="text" name="name" required placeholder="Enter your full name" class="w-full bg-black Amit-input px-4 py-3 text-sm font-medium text-white">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-bold text-zinc-300 mb-1">Your Email</label>
-                            <input type="email" name="email" required placeholder="name@example.com" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                            <input type="email" name="email" required placeholder="name@example.com" class="w-full bg-black Amit-input px-4 py-3 text-sm font-medium text-white">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-zinc-300 mb-1">Phone Number</label>
-                            <input type="tel" name="phone" placeholder="+91 9717379889" class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white">
+                            <input type="tel" name="phone" placeholder="+91 9717379889" class="w-full bg-black Amit-input px-4 py-3 text-sm font-medium text-white">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-zinc-300 mb-1">Project Message / Requirements</label>
-                        <textarea name="message" rows="4" required placeholder="Describe the calculator or web app you want to build..." class="w-full bg-black apple-input px-4 py-3 text-sm font-medium text-white"></textarea>
+                        <textarea name="message" rows="4" required placeholder="Describe the calculator or web app you want to build..." class="w-full bg-black Amit-input px-4 py-3 text-sm font-medium text-white"></textarea>
                     </div>
                     <button type="submit" class="w-full py-4 bg-[#00FF66] hover:bg-emerald-400 text-black font-extrabold rounded-xl shadow-lg transition">
                         Submit Inquiry to calculatorvala19@gmail.com <i class="fa-solid fa-paper-plane ml-2"></i>
@@ -612,7 +612,7 @@
     <!-- Footer -->
     <footer class="bg-black text-white border-t border-zinc-900 mt-auto py-5 text-center text-xs">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div>CalculatorVala &copy; 2026. Precision design inspired by Apple & Y Combinator.</div>
+            <div>CalculatorVala &copy; 2026. Precision design inspired by Amit & Y .</div>
             <div>Contact for web development: <span class="text-[#00FF66] font-bold">calculatorvala19@gmail.com</span> | Phone: <span class="text-[#2997FF] font-bold">+91 9717379889</span></div>
         </div>
     </footer>
